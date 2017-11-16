@@ -1,0 +1,150 @@
+
+<?php 
+
+use yii\helpers\Url;
+
+use yii\helpers\Html;
+
+
+
+
+ ?>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>信富平台</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link href="css/home.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/css.css" rel="stylesheet" type="text/css" media="all" />
+
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script src="js/ajaxfileUpload.js"></script>
+</head>
+
+<body>
+
+<!--top-->
+
+<div class="top">
+	<div class="box">
+        <a href="<?= Url::to(['user/index'])?>" class="return"><img src="images/return.png"></a>
+        个人信息    
+    </div>
+</div>
+
+<div class="ten_money" style="margin-top:44px;">
+	<div class="box">
+    	<ul>
+        	<li>
+            	<span>用户名</span>
+               <i> <input type="text" id="username" width="500px" style="font-size:16px;" placeholder="请填写真实姓名"></i>
+            </li>
+            <li>
+            	<span>手机号</span>
+                <i><?= $info['cellPhone']?></i>
+            </li>
+            <li style="border-bottom:none;">
+            	<span>邮箱</span>
+                <i><?= $info['email']?></i>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <span>身份证号</span>
+                <i><input type="text" id="idCard" width="500px" style="font-size:16px;" placeholder="请输入身份证号"></i>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <span>头像</span>
+                <i><a href="javascript:void(0)" id="xuanzeImg">选择图片</a></i>
+                <i>
+                <div id="imgDiv" style="display:none;">
+                <?php for ($i=1; $i <= 10; $i++) { ?>
+                    <img src="uploads/<?= $i?>.jpg" alt="" style="width:100px; height:100px; border-radius:50%; overflow:hidden; float:left;" class="headImg">
+                <?php } ?>
+                </div></i>
+                <i><div><img src="" alt=""  id="headImg"  style="width:100px; height:100px; border-radius:50%; overflow:hidden;"></div></i>
+            </li>
+        </ul>
+    </div>
+
+</div>
+    <input type="button" class="btn btn3" value="申请" style="margin-top:200px;" id="but">
+    <input type="button" class="btn btn2" value="重置" style="margin-top:200px;" id="reset">
+    </body>
+</html>
+<script>
+$('#reset').click(function (){
+    $('#username').val('');
+    $('#idCard').val('');
+    $('#headImg').attr('src','');
+})
+$("#xuanzeImg").click(function(){
+    $('#imgDiv').css('display','block');
+    $("#headImg").attr('src','');
+});
+$(".headImg").click(function(){
+    var headImg = $(this).attr('src');
+    $('#imgDiv').css('display','none');
+    // $('#headImg').html("<img src='"+headImg+"' height='90px' width='90px'>");
+    $("#headImg").attr('src',headImg);
+});
+$("#but").click(function(){
+    //真实姓名
+    var username = $('#username').val();
+    var regUsername = /^[\u4E00-\u9FA5]{1,6}$/;
+    if(username == ''){
+        alert('用户名不允许为空！');
+        return false;
+    }
+    if(!regUsername.test(username)){
+        alert('姓名不合法！');
+        return false;
+    }
+    //身份证号
+    var idCard = $('#idCard').val();
+    if(idCard == ''){
+        alert('请输入身份证号!');
+        return false;
+    }
+    if(idCard.length != 18){
+        alert('外国人不得参与实名制!');
+        return false;
+    }
+    //头像
+    var headImg = $("#headImg").attr('src');
+    if(headImg == ''){
+        alert('请选择头像!');
+        return fasle;
+    }
+
+    $.ajax({
+        url:"<?= Url::to(['user/realname'])?>",
+        type:"post",
+        data:{
+            username:username,
+            idCard:idCard,
+            headImg:headImg
+        },
+        success:function(msg){
+            if(msg == 0){
+                alert('身份证不合法！');
+            }else if(msg == 1){
+                alert('实名制失败!请联系管理员!');
+            }else if(msg == 2){
+                alert('头像修改失败!');
+            }else if(msg == 4){
+                alert('该身份证号已经实名制!');
+            }else{
+                alert('实名制成功请等待管理员审核!');
+                window.location.href="<?= Url::to(['user/index'])?>";
+            }
+        }
+    })
+})
+</script>
+
+

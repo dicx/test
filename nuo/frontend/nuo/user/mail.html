@@ -1,0 +1,119 @@
+
+
+<?php 
+
+use yii\helpers\Url;
+
+use yii\helpers\Html;
+
+
+ ?>
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>信富平台</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link href="css/home.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/css.css" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+
+<body style="background:#fff;">
+
+<!--top-->
+
+<div class="top">
+	<div class="box">
+        <a href="<?= Url::to(['user/index'])?>" class="return"><img src="images/return.png"></a>
+        邮箱认证    
+    </div>
+</div>
+
+
+<div class="login_lo" style="margin-top:56px;">
+	<div class="box">
+    	<div class="lo_1 lo_2">
+        	<span>邮箱</span>
+            <input type="text" name="address" size="60" maxlength="60" style="" placeholder="请输入您常用的邮箱" id="email">
+            <button id="send" style="margin-top:15px" class="">发送</button>
+        </div>
+        
+        <div class="lo_1 lo_2">
+            <span>验证码</span>
+            <input type="text" name="address" size="60" maxlength="60" style="" placeholder="请输入您收到的验证码" id="code">
+            <input type="hidden" id="hid">
+        </div>       
+        <a href="#" class="lo_login" id="btn" style="display:none;">绑定</a>
+    </div>
+    
+
+</body>
+</html>
+<script src="js/jquery.js"></script>
+<script>
+$(function(){
+    $('#send').click(function(){
+        var email = $('#email').val();
+        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        if(email == ''){
+            alert('请输入邮箱!');
+            return fasle;
+        }else if(!reg.test(email))
+        {
+            alert('邮箱不合法');
+            return false;
+        }else{
+            $.ajax({
+                type:'post',
+                url:"<?= Url::to(['user/mail'])?>",
+                data:{
+                    email:email,
+                },
+                success:function(msg){
+                    $("#hid").val(msg);
+                    alert('我们已经向您的邮箱发送验证码');
+                }
+            })
+        }
+    })
+
+    $('#code').blur(function(){
+        var email = $('#email').val();
+        var hid = $('#hid').val();
+        var code = $(this).val();
+        if(code == ''){
+            alert('验证码不能为空!');
+            return false;
+        }
+        if(hid != code){
+            alert('验证码输入不正确!');
+            return false;
+        }else{
+            $('#btn').attr('style','display:block')
+        }
+    })
+
+    $('#btn').click(function(){
+        var email = $('#email').val();
+        $.ajax({
+                type:'get',
+                url:"<?= Url::to(['user/realmail'])?>",
+                data:{
+                    email:email,
+                },
+                success:function(msg){
+                    if(msg == 1){
+                        alert('绑定成功!');
+                        window.location.href="<?= Url::to(['user/index'])?>";
+                    }else if(msg == 0){
+                        alert('绑定失败!');
+                    }else{
+                        alert("该邮箱已被绑定!")
+                    }
+                }
+            })
+    })
+})
+</script>

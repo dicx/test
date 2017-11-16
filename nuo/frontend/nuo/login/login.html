@@ -1,0 +1,88 @@
+<?php 
+
+use yii\helpers\Url;
+
+use yii\helpers\Html;
+
+
+
+
+ ?>
+
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>信富平台</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link href="css/home.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/css.css" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+
+<body style="background:#fff;">
+
+<!--top-->
+
+<div class="top">
+	<div class="box">
+        <a href="index.html" class="return"><img src="images/return.png"></a>
+        登录    
+    </div>
+</div>
+
+
+
+<img src="images/logo/logo.png" class="lo_logo">
+
+<div class="login_lo">
+	<div class="box">
+    	<div class="lo_1">
+        	<img src="images/yong.png">
+            <input type="text" id="cellPhone" placeholder="请输入手机号" name="address" size="60" maxlength="60" style="color:black" >
+        </div>
+        <div class="lo_1">
+        	<img src="images/mi.png">
+            <input type="password" id="pwd" name="address" size="60" maxlength="60" style="color:black" >
+        </div>
+        <span id="span" style="color:red"></span>
+        <a href="#" class="lo_login" id="login">登录</a>
+        <a href="<?= Url::to(['login/register'])?>" class="resi">免费注册</a>
+    </div>
+</div>
+</body>
+</html>
+<script src="js/jquery.js"></script>
+<script>
+    $(function(){
+        $('#login').click(function(){
+            var cellPhone = $('#cellPhone').val();
+            var pwd = $('#pwd').val();
+            if(cellPhone == ''){
+                $('#span').html('请填写手机号');return fasle;
+            }
+           if(pwd == ''){
+                $('#span').html('请填写密码');return fasle;
+            }
+            $.ajax({
+                url:"<?= Url::to(['login/login'])?>",
+                type:"post",
+                data:{
+                    cellPhone:cellPhone,
+                    pwd:pwd
+                },
+                success:function(msg){
+                    if(msg == 0){
+                        $('#span').html('该手机号不存在');
+                    }else if(msg == 1){
+                        alert('登录成功!');
+                        window.location.href="<?= Url::to(['site/index'])?>";
+                    }else{
+                        alert('密码错误，请重新填写！')
+                    }
+                }
+            })
+        })
+    })
+</script>

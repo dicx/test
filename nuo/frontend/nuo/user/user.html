@@ -1,0 +1,168 @@
+<?php 
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+use frontend\assets\UserAsset;
+UserAsset::register($this);
+$this->beginPage();
+
+?>
+
+<body>
+<!--top-->
+<div class="top">
+	<div class="box">
+        <a href="index.html" class="return"><img src="images/return.png"></a>
+        我的账户    
+    </div>
+</div>
+<div class="user">
+	<div class="box">
+    <a href="<?php if($list['realStatus'] == 0 || $list['realStatus'] == 1)echo Url::to(['user/info']);else echo "#";?>" title="<?php if($list['realStatus'] == 0)echo '点击实名制';else if($list['realStatus'] == 1) echo '您已递交实名制申请';?>">
+    	<img src="<?= $list['headImg']?>" style="width:100px; height:100px; border-radius:50%; overflow:hidden;">
+        <div class="us_yong">
+        	<span><?php if($list['realStatus'] == 0 || $list['realStatus'] == 1)echo '欢迎您，'.$list['cellPhone'];else {if($list['recharge']>=50000)echo '尊敬的<font color=red>VIP</font>欢迎您，<font color=FFCC00>'.$list['username'].'</font>';else echo '欢迎您，'.$list['username'];}?><img src="<?php if($list['recharge']>=50000)echo 'images/vip.png';else echo 'images/vipdbj.png';?>"/ id="headImg" style="width:20px;height:20px;float:left;padding:0;margin-top:5px; margin-right:0; margin-bottom:0;"></span>
+            <span>账户总额:￥<?= $list['recharge']?></span>
+            <?php if($list['email'] == ''){ ?>
+                <a href="<?= Url::to(['user/mail'])?>"><button class="btn btn-info " style="float:left;">绑定邮箱</button></a>
+            <?php }else{ ?>
+                <a href="#"><button class="btn" style="float:left;">邮箱已绑定</button></a>
+            <?php } ?>
+        </div>
+    </a>
+    <div class="btn-group btn-group-sm" style="float:right;">
+      <a href="<?= Url::to(['login/logout'])?>"><button class="btn btn2" style="float:right; margin-top:30px;">注销登录</button></a>        
+    </div>
+
+    <div class="vipczjdu">  
+    	<!--top-->
+        <div class="vipdu_t">
+
+        	<span>
+            	<p></p>
+            </span>￥
+            <em>50000</em>
+            
+        </div>
+        <!--bottom-->
+        <div class="vipdu_b">
+        	<span>代收金额：</span>
+       		<i>￥</i>
+        	<i class="nans"><?= $list['recharge']?></i>
+            <?php if($list['recharge'] < 50000){ ?>
+                    <span>距离成为vip还差：</span>
+                    <i>￥</i>
+                    <b></b>
+                <?php }else { ?>
+                    <span></span>
+                <?php } ?>
+        </div>
+        <script>
+ 		var n=$(".nans").html()
+ 		var l=50000
+ 		var pp=l-n
+ 		$(".vipdu_b b").text(pp)
+ 		var p=n/l*100+'%';
+ 		$(".vipdu_t span p").css({width:p})
+		</script>
+    </div>
+    <div class="us_ke">
+        	<span style="border-right:1px solid #dcdcdc;">
+            	<i>可用余额（元）</i>
+                <em>134543</em>
+            </span>
+            <span>
+            	<i>冻结总额（元）</i>
+                <em>134543</em>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="us_rec">
+    <span><a href="<?= Url::to(['user/recharge'])?>">充值</a></span>
+    <span><a href="withdraw.html" style="background:#fff; border:1px solid #29a7e2; color:#29a7e2;">提现</a></span>
+</div>
+<!--微信部分-->
+<div class="xinfuer_t">
+	<a href="#">
+    	<b><img src="images/jkjl_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/hqlc_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/dqlc_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/sbtz_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/zqzr_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/zjtj_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/jyjl_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/zdtb_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/yqjl_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/hbgl_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/jfgl_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/cjjl_t.png"/></b>
+    </a>
+    <a href="liyijisuanqi.html">
+    	<b><img src="images/syjsq_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/tgmx_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/jjjl_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/xycj_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/yqm_t.png"/></b>
+    </a>
+    <a href="#">
+    	<b><img src="images/ewm_t.png"/></b>
+    </a>
+</div>
+<script>
+var this_w=$(".xinfuer_t").width()/3+'px';
+$(".xinfuer_t a").css({height:this_w,width:this_w});
+</script>
+
+    
+    
+
+
+
+
+
+    
+        
+
+
+
+
+
+
+
+
+
+    
+
+        
+

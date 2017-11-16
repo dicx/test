@@ -1,0 +1,157 @@
+<?php 
+
+use yii\helpers\Url;
+
+use yii\helpers\Html;
+
+
+ ?>
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>信富平台</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link href="css/home.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/css.css" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+
+<body style="background:#fff;">
+
+<!--top-->
+
+<div class="top">
+	<div class="box">
+        <a href="<?= Url::to(['site/index'])?>" class="return"><img src="images/return.png"></a>
+        注册    
+    </div>
+</div>
+
+
+<div class="login_lo" style="margin-top:56px;">
+	<div class="box">
+    	<div class="lo_1 lo_2">
+        	<span>手机号</span>
+            <input type="text" id="cellPhone" name="address" size="60" maxlength="60" style="color:black" placeholder="请输入手机号">
+            <span style="color:red">*必填</span>
+        </div>
+        <div class="lo_1 lo_2">
+        	<span>验证码</span>
+            <input type="text" id="code" name="address" size="60" maxlength="60" style="color:black" placeholder="请输入验证码" >
+            <span style="color:red">*必填</span>
+            <div class="yan">
+                    <input type="button" id="btn" class="btn_mfyzm" value="获取验证码" />
+<script src="js/jquery.js"></script>
+
+<script type="text/javascript">
+var wait=60;
+document.getElementById("btn").disabled = false;   
+function time(o) {
+		if (wait == 0) {
+			o.removeAttribute("disabled");           
+			o.value="获取验证码";
+			wait = 60;
+		} else {
+			o.setAttribute("disabled", true);
+			o.value="重新发送(" + wait + ")";
+			wait--;
+			setTimeout(function() {
+				time(o)
+			},
+			1000)
+		}
+	}
+document.getElementById("btn").onclick=function(){time(this);}
+</script> 
+              </div>            
+    </div>
+<!--     	<div class="lo_1 lo_2">
+        	<span>邀请码</span>
+            <input type="text" name="address" size="60" maxlength="60" style="color:#ccc" value="选填" onfocus="if(this.value=='选填'){this.value=''};this.style.color='black';" onblur="if(this.value==''||this.value=='选填'){this.value='选填';this.style.color='#ccc';}">
+        </div> -->
+        <div class="lo_1 lo_2">
+        	<span>密码</span>
+            <input type="password" id="pwd" name="address" size="60" maxlength="60" style="color:black" placeholder="请输入密码" >
+            <span style="color:red">*必填</span>
+        </div>
+        <div class="lo_1 lo_2">
+        	<span>确认密码</span>
+            <input type="password" id="deter_pwd" name="address" size="60" maxlength="60" style="color:black" placeholder="请再一次输入密码">
+            <span style="color:red">*必填</span>
+        </div>
+        <div class="lo_1 lo_2">
+            <span>支付密码</span>
+            <input type="password" id="tradingPassword" name="address" size="60" maxlength="60" style="color:black" placeholder="支付密码">
+            <span style="color:red">*必填</span>
+        </div>
+        
+        <a href="#" class="lo_login">注册</a>
+    </div>
+</div>
+
+
+</body>
+</html>
+<script>
+$(function(){
+    $('.lo_login').click(function(){
+        var cellPhone = $("#cellPhone").val();
+        if(cellPhone == ''){
+            alert('请输入手机号');
+            return false;
+        }else if(cellPhone.length != 11){
+            alert('手机号不合法');
+            return false;
+        }
+        var pwd = $('#pwd').val();
+        if(pwd == ''){
+            alert('请输入密码');
+           return false;
+        }else if(pwd.length >10 || pwd.length<6){
+            alert('密码长度6-10之间');
+           return false;
+        }
+        var deter_pwd = $('#deter_pwd').val();
+        if(deter_pwd != pwd){
+            alert('两次密码输入不一致');
+           return false;
+        }
+
+        var tradingPassword = $('#tradingPassword').val();
+        var r = /^[0-9]+.?[0-9]*$/;
+        if(tradingPassword == ''){
+            alert('支付密码不能为空！');
+            return false;
+        }else if(tradingPassword.length != 6 || !r.test(tradingPassword)){
+            alert('支付密码为6位纯数字');
+            return false;
+        }
+        
+        
+            $.ajax({
+                type:'post',
+                url:"<?= Url::to(['login/register'])?>",
+                data:{
+                    cellPhone:cellPhone,
+                    pwd:pwd,
+                    tradingPassword:tradingPassword,
+                },
+                success:function(msg){
+                    if(msg == 0){
+                        alert('对不起，此手机号注册过！');
+                    }else if(msg == 1){
+                        alert('注册成功！');
+                        window.location.href="<?= Url::to(['login/login'])?>";
+                    }else{
+                        alert('注册失败！');
+                    }
+                }
+            })
+    })
+
+})
+
+</script>
+        

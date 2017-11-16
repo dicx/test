@@ -1,0 +1,23 @@
+
+<?php 
+
+use yii\helpers\Url;
+use yii\helpers\Html;
+
+ ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<a href="javascript:void(0)" id="qq_but"><img src="images/qq_login.png" alt=""></a>
+</body>
+</html>
+<script src="js/jquery.js"></script>
+<script>
+	$('#qq_but').click(function(){
+		var A=window.open("<?= Url::to(['user/index'])?>","","width=800px,height=600px,scrollbars=1,resizable=1	");
+	})
+</script>
